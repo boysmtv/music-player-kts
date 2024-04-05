@@ -1,0 +1,39 @@
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+/**
+ * execute Git command
+ * @param command the command that must be executed
+ */
+def appVersionName = "1.0"
+def appVersionCode = 1
+
+android {
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 33
+        versionCode appVersionCode
+        versionName appVersionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    flavorDimensions "bds"
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }
+}

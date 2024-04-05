@@ -1,0 +1,49 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="horizontal_margin">24dp</dimen>
+    <dimen name="txt">30dp</dimen>
+
+    <dimen name="_3dp">3dp</dimen>
+    <dimen name="_6dp">6dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_12dp">12dp</dimen>
+    <dimen name="_16dp">16dp</dimen>
+    <dimen name="_20dp">20dp</dimen>
+    <dimen name="_30dp">30dp</dimen>
+    <dimen name="_32dp">32dp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+    <dimen name="_50dp">50dp</dimen>
+    <dimen name="_55dp">55dp</dimen>
+    <dimen name="_60dp">60dp</dimen>
+    <dimen name="_70dp">70dp</dimen>
+    <dimen name="_80dp">80dp</dimen>
+    <dimen name="_90dp">90dp</dimen>
+    <dimen name="_100dp">100dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="radio_button_conner_radius">5dp</dimen>
+    <dimen name="radio_button_stroke_border">1dp</dimen>
+
+    <!--for zip-->
+    <dimen name="display4">112sp</dimen><!--Black 54%-->
+    <dimen name="display3">56sp</dimen><!--Black 54%-->
+    <dimen name="display2">45sp</dimen><!--Black 54% & leading 48dp-->
+    <dimen name="display1">34sp</dimen><!--Black 54% & leading 40dp-->
+
+    <dimen name="headline">24sp</dimen><!--Black 87% & leading 32dp-->
+    <dimen name="title">20sp</dimen><!--Black 87%-->
+
+    <dimen name="subheading2">16sp</dimen><!--Black 87% & leading 28dp-->
+    <dimen name="subheading1">15sp</dimen><!--Black 87% & leading 24dp-->
+    <dimen name="body2">14sp</dimen><!--Black 87% & leading 24dp-->
+    <dimen name="body1">13sp</dimen><!--Black 87% & leading 20dp-->
+
+    <dimen name="caption">12sp</dimen><!--Black 54%-->
+    <dimen name="button">14sp</dimen>
+    <dimen name="appbar_padding">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
+</resources>
