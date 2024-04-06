@@ -17,17 +17,19 @@ import com.example.musicplayerkts.activity.music.vm.MusicViewModel
 import com.example.musicplayerkts.databinding.ActivitySearchBinding
 import com.example.musicplayerkts.databinding.ActivitySearchListItemBinding
 import com.example.musicplayerkts.helper.InterfaceDialog
+import io.gresse.hugo.vumeterlibrary.VuMeterView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
 class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultModel> {
 
+    private val TAG = this::class.java.simpleName
+
     val musicVM by viewModel<MusicViewModel>()
 
     private lateinit var mediaPlayer: MediaPlayer
 
-    private val TAG = this::class.java.simpleName
     private val thisContext = this@SearchActivity
 
     private lateinit var songAdapter: SongAdapter
@@ -39,6 +41,7 @@ class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultMod
     private lateinit var listMusic: List<MusicResultModel>
 
     private var currPosition = 0
+    private lateinit var musicVuMeterView: VuMeterView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,8 +78,10 @@ class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultMod
                 it?.let {
                     if (it.isEmpty()) {
                         binding.tvEmpty.visibility = VISIBLE
+                        binding.tvEmptySearch.visibility = VISIBLE
                     } else {
                         binding.tvEmpty.visibility = GONE
+                        binding.tvEmptySearch.visibility = GONE
                     }
 
                     listMusic = it
@@ -104,45 +109,47 @@ class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultMod
         VM.doIt(MusicReqModel(term = binding.etSearchName.text.toString()))
     }
 
-    private fun setOnListener() {
-        binding.ivMusicPlay.setOnClickListener {
+    private fun setOnListener() = with(binding) {
+        ivMusicPlay.setOnClickListener {
             if (mediaPlayer.isPlaying) {
                 mediaPlayer.pause()
-                binding.ivMusicPlay.setImageBitmap(null)
-                binding.ivMusicPlay.setImageResource(android.R.color.transparent)
-                binding.ivMusicPlay.setBackgroundResource(R.drawable.ic_music_play)
                 musicResultModel.isPlay = false
+                setupStartOrStop(false)
             } else {
                 mediaPlayer.start()
-                binding.ivMusicPlay.setImageBitmap(null)
-                binding.ivMusicPlay.setImageResource(android.R.color.transparent)
-                binding.ivMusicPlay.setBackgroundResource(R.drawable.ic_music_pause_2)
                 musicResultModel.isPlay = true
+                setupStartOrStop(true)
+                startMusicMeter()
             }
         }
 
-        binding.ivMusicNext.setOnClickListener {
-            binding.rvSearch.postDelayed({
-                if (binding.rvSearch.findViewHolderForAdapterPosition(0) != null) {
-                    binding.rvSearch.findViewHolderForAdapterPosition(currPosition + 1)!!.itemView.performClick()
+        ivMusicNext.setOnClickListener {
+            rvSearch.postDelayed({
+                if (rvSearch.findViewHolderForAdapterPosition(0) != null) {
+                    rvSearch.findViewHolderForAdapterPosition(currPosition + 1)!!.itemView.performClick()
                 }
             }, 0)
         }
 
-        binding.ivMusicPrevious.setOnClickListener {
-            binding.rvSearch.postDelayed({
-                if (binding.rvSearch.findViewHolderForAdapterPosition(0) != null) {
+        ivMusicPrevious.setOnClickListener {
+            rvSearch.postDelayed({
+                if (rvSearch.findViewHolderForAdapterPosition(0) != null) {
                     if (currPosition > 0)
-                        binding.rvSearch.findViewHolderForAdapterPosition(currPosition - 1)!!.itemView.performClick()
+                        rvSearch.findViewHolderForAdapterPosition(currPosition - 1)!!.itemView.performClick()
                 }
             }, 0)
         }
 
-        binding.ivSearch.setOnClickListener {
+        ivSearch.setOnClickListener {
             setRequest(musicVM, binding, songAdapter)
         }
 
-        binding.etSearchName.addTextChangedListener(object : TextWatcher {
+        ivCancel.setOnClickListener {
+            etSearchName.setText("")
+            setRequest(musicVM, binding, songAdapter)
+        }
+
+        etSearchName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -159,6 +166,7 @@ class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultMod
         position: Int,
         model: MusicResultModel
     ) {
+        musicVuMeterView = itemBinding.vmMusic
         musicResultModel = model
         currPosition = position
         binding.tvPlaySong.text = model.trackName
@@ -166,7 +174,7 @@ class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultMod
         songAdapter.notifyDataSetChanged()
 
         if (musicResultModel.isPlay) {
-            itemBinding.vmMusic.visibility = View.INVISIBLE
+            musicVuMeterView.visibility = GONE
             musicResultModel.isPlay = false
             mediaPlayer.stop()
         } else {
@@ -184,25 +192,18 @@ class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultMod
                 binding.ivMusicPlay.setImageResource(android.R.color.transparent)
                 binding.ivMusicPlay.setBackgroundResource(R.drawable.ic_music_pause_2)
 
-                itemBinding.vmMusic.visibility = View.VISIBLE
-
+                musicVuMeterView.visibility = VISIBLE
                 musicResultModel.isPlay = true
-                StartSongTrack(itemBinding).start()
+
+                startMusicMeter()
             } catch (ex: Exception) {
                 Timber.tag("MySongAdapter").e("Error: " + ex.message)
             }
         }
     }
 
-    inner class StartSongTrack(binding: ActivitySearchListItemBinding) : Thread() {
-
-        private var itemBinding: ActivitySearchListItemBinding
-
-        init {
-            itemBinding = binding
-        }
-
-        override fun run() {
+    private fun startMusicMeter() {
+        Thread {
             var currentPosition = mediaPlayer.currentPosition
             val total = mediaPlayer.duration
 
@@ -210,19 +211,39 @@ class SearchActivity : AppCompatActivity(), SearchOnClickListener<MusicResultMod
                 currentPosition = try {
                     mediaPlayer.currentPosition
                 } catch (e: InterruptedException) {
-                    return
+                    return@Thread
                 } catch (e: java.lang.Exception) {
-                    return
+                    return@Thread
                 }
                 binding.sbProgress.progress = currentPosition
 
-                if (!mediaPlayer.isPlaying && currentPosition >= total) {
-                    runOnUiThread {
-                        itemBinding.vmMusic.visibility = View.INVISIBLE
-                        musicResultModel.isPlay = false
-                    }
+                if (currentPosition == total) {
+                    stopMusic()
                 }
             }
+        }.start()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun stopMusic() {
+        runOnUiThread {
+            musicVuMeterView.visibility = GONE
+            songAdapter.notifyItemChanged(currPosition)
+        }
+        musicResultModel.isPlay = false
+        mediaPlayer.stop()
+        setupStartOrStop(false)
+    }
+
+    private fun setupStartOrStop(isStart: Boolean) = with(binding) {
+        if (isStart) {
+            ivMusicPlay.setImageBitmap(null)
+            ivMusicPlay.setImageResource(android.R.color.transparent)
+            ivMusicPlay.setBackgroundResource(R.drawable.ic_music_pause_2)
+        } else {
+            ivMusicPlay.setImageBitmap(null)
+            ivMusicPlay.setImageResource(android.R.color.transparent)
+            ivMusicPlay.setBackgroundResource(R.drawable.ic_music_play)
         }
     }
 }

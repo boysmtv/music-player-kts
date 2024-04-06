@@ -57,7 +57,6 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.AddressHolder>() {
             model: MusicResultModel,
             listener: SearchOnClickListener<MusicResultModel>
         ) {
-
             Glide.with(binding.root).load(model.artworkUrl100).into(binding.icPhoto)
 
             binding.tvSongName.text = model.trackName
@@ -66,7 +65,7 @@ class SongAdapter : RecyclerView.Adapter<SongAdapter.AddressHolder>() {
 
             if (MusicResultModel.previewUrl != null) {
                 if (!MusicResultModel.previewUrl.equals(model.previewUrl)) {
-                    binding.vmMusic.visibility = View.INVISIBLE
+                    binding.vmMusic.visibility = View.GONE
                 } else {
                     binding.vmMusic.visibility = View.VISIBLE
                 }

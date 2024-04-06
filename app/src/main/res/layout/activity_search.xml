@@ -39,7 +39,7 @@
                     <EditText
                         android:id="@+id/et_search_name"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50dp"
+                        android:layout_height="@dimen/_40dp"
                         android:background="@null"
                         android:gravity="center"
                         android:hint="Search Artist"
@@ -49,35 +49,32 @@
                         android:id="@+id/iv_search"
                         android:layout_alignParentTop="true"
                         android:layout_width="@dimen/_50dp"
-                        android:layout_height="@dimen/_50dp"
+                        android:layout_height="@dimen/_40dp"
                         android:padding="8dp"
                         android:src="@drawable/ic_search" />
+
+                    <ImageView
+                        android:id="@+id/iv_cancel"
+                        android:layout_alignParentTop="true"
+                        android:layout_width="@dimen/_50dp"
+                        android:layout_height="@dimen/_40dp"
+                        android:padding="8dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_close" />
 
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_search_icon"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/_16dp"
-                android:layout_marginRight="@dimen/_16dp"
-                android:layout_marginBottom="@dimen/_16dp"
-                android:elevation="10dp"
-                app:cardCornerRadius="8dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/activity_search_list_item"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-            </androidx.cardview.widget.CardView>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/activity_search_list_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -88,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:foregroundGravity="bottom"
-        android:elevation="10dp"
+        android:elevation="16dp"
         app:cardCornerRadius="8dp">
 
         <LinearLayout
@@ -99,8 +96,8 @@
             android:orientation="vertical">
 
             <SeekBar
-                android:layout_weight="0"
                 android:id="@+id/sbProgress"
+                android:enabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -129,15 +126,15 @@
 
                 <ImageView
                     android:id="@+id/iv_music_previous"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_music_previous" />
 
                 <ImageView
                     android:id="@+id/iv_music_play"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginEnd="@dimen/_16dp"
                     android:contentDescription="@string/app_name"
@@ -145,8 +142,8 @@
 
                 <ImageView
                     android:id="@+id/iv_music_next"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/ic_music_next" />
 
@@ -166,13 +163,27 @@
 
     <TextView
         android:id="@+id/tv_empty"
-        style="@style/Widget.AppCompat.ProgressBar"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:visibility="gone"
-        android:text="empty music"
-         />
+        android:text="No Result"
+        />
+
+    <TextView
+        android:id="@+id/tv_empty_search"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_empty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_8dp"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:text="Try a new search."
+        />
 
 </RelativeLayout>

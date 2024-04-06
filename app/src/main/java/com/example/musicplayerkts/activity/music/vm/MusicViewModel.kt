@@ -9,6 +9,8 @@ import com.example.musicplayerkts.activity.music.model.MusicResultModel
 import com.example.musicplayerkts.activity.music.usecase.MusicUC
 import com.example.musicplayerkts.domain.model.ApiError
 import com.example.musicplayerkts.domain.usecase.UseCaseResponse
+import com.google.gson.Gson
+import timber.log.Timber
 
 class MusicViewModel(
     private val musicUC: MusicUC,
@@ -27,6 +29,7 @@ class MusicViewModel(
                 override fun onSuccess(result: MusicModel) {
                     onSuccess.value = result.results
                     onProgress.value = false
+                    Timber.tag(TAG).e("Model: ${Gson().toJson(result.results)}")
                 }
 
                 override fun onError(apiError: ApiError) {

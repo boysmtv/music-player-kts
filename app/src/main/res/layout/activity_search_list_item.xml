@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/layoutContent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:vumeter="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutContent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,9 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:orientation="vertical">
+        android:paddingRight="8dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -20,20 +21,29 @@
             android:layout_marginStart="12dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ic_photo"
-                android:layout_width="50dp"
-                android:layout_height="@dimen/_50dp"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/image_steve" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                app:cardCornerRadius="8dp">
+
+                <ImageView
+                    android:id="@+id/ic_photo"
+                    android:layout_width="50dp"
+                    android:layout_height="@dimen/_50dp"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_steve" />
+
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_toStartOf="@+id/vm_music"
-                android:layout_toEndOf="@+id/ic_photo"
+                android:layout_toEndOf="@+id/cv_photo"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -66,15 +76,15 @@
                 android:id="@+id/vm_music"
                 android:layout_width="@dimen/_40dp"
                 android:layout_height="@dimen/_50dp"
-                android:layout_marginStart="@dimen/_8dp"
-                android:layout_marginEnd="@dimen/_8dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_8dp"
+                android:layout_marginEnd="@dimen/_8dp"
                 android:paddingTop="@dimen/_8dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 vumeter:vumeter_backgroundColor="#33b5e5"
-                vumeter:vumeter_blockNumber="6"
-                vumeter:vumeter_blockSpacing="20dp"
+                vumeter:vumeter_blockNumber="7"
+                vumeter:vumeter_blockSpacing="14dp"
                 vumeter:vumeter_speed="5"
                 vumeter:vumeter_startOff="false"
                 vumeter:vumeter_stopSize="5dp" />
@@ -87,6 +97,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:background="@color/gray_low"/>
+        android:background="@color/gray_low" />
 
 </LinearLayout>

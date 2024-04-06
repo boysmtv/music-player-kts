@@ -17,6 +17,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Music Player"
+rootProject.name = "Music Player Kts"
 include(":app")
  
