@@ -26,3 +26,6 @@ jobs:
         with:
           name: movie-based.apk
           path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
